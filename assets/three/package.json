@@ -1,0 +1,162 @@
+{
+  "_args": [
+    [
+      "three",
+      "/home/victoria/CaliaNova2/assets"
+    ]
+  ],
+  "_from": "three@latest",
+  "_hasShrinkwrap": false,
+  "_id": "three@0.119.1",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/three",
+  "_nodeVersion": "10.15.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/three_0.119.1_1596122345451_0.5553042734493685"
+  },
+  "_npmUser": {
+    "email": "info@mrdoob.com",
+    "name": "mrdoob"
+  },
+  "_npmVersion": "6.9.0",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "three",
+    "raw": "three",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/three/-/three-0.119.1.tgz",
+  "_shasum": "9d979a082c4cd9622af8e3498a8dfa026a619332",
+  "_shrinkwrap": null,
+  "_spec": "three",
+  "_where": "/home/victoria/CaliaNova2/assets",
+  "author": {
+    "name": "mrdoob"
+  },
+  "bugs": {
+    "url": "https://github.com/mrdoob/three.js/issues"
+  },
+  "dependencies": {},
+  "description": "JavaScript 3D library",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
+    "concurrently": "^5.2.0",
+    "eslint": "^7.4.0",
+    "eslint-config-mdcs": "^5.0.0",
+    "eslint-plugin-html": "^6.0.2",
+    "google-closure-compiler": "20200628.0.0",
+    "http-server": "^0.12.3",
+    "rollup": "^2.21.0",
+    "rollup-plugin-buble": "^0.19.8",
+    "typescript": "^3.9.6"
+  },
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "dist": {
+    "fileCount": 1545,
+    "integrity": "sha512-GHyh/RiUfQ5VTiWIVRRTANYoXc1PFB1y+jDVRTb649nif1uX1F06PT1TKU3k2+F/MN4UJ3PWvQB53fY2OqKqKw==",
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfIuTrCRA9TVsSAnZWagAAlKwP/13SVWT6Y8t12dZhONoT\nTIpNXlFaViY7laU6FxY4LMt026tuBUTR1cNnD3j/Psy2ZTr2cfr9X38oTOEz\nUomOZNcTMyc8hc31dhL10ZEwu2Yhom9O79nb+hM97MueZDKk7T5irptg9T4o\nIzvbd5TdHfgQouC1GauMyA8PXAO7Y33jGfX1aM6wTynrNk8NKm/9XhT2k7Gl\nkfWHV8bTiw8D8EoH+Ku8Gd/CVMeNnCyiGFvyzbDyZH26UaKzDg4Jf0LTc9oH\n7ToLWOg7FfeAQOXKkiU2vembr7VMIwUoLDSH4F3N0oeaNNV/vi+kamKVArzq\n07KWKCcr0O2MBvqkAtn6I25oIh1OGx6PibyeDx+mtEnveXRBgIFVt+x6SLgd\naj9zvd8YB9By6xx1chczfUA4pQrG1uYAsk0M2j3rpDdb9h2Or3I7KZfu3FkZ\natfEO8cMgaavbRuyZ97Gd+ZVVUTDp3qMM/fmoi/Zz9nBWGoZ8hdPWua02AYi\n+8QH8K8QcB+ch7m7C1K31rCUxW/xkzKeiWzWgrzCsPVwNumrN853anSnwigy\neYTcQVl9nRqcQ1pSM0kOV2bmqQbzux7n9K/5byqMBOMSrXkxdiUDSGjco3uc\nyhPOEjI/cndRHmoryHvDI5YGuzdkqujiH6qUSOi4fegSnVtcLbpDQGIDvc7S\ndzNB\r\n=hc/L\r\n-----END PGP SIGNATURE-----\r\n",
+    "shasum": "9d979a082c4cd9622af8e3498a8dfa026a619332",
+    "tarball": "https://registry.npmjs.org/three/-/three-0.119.1.tgz",
+    "unpackedSize": 22415803
+  },
+  "eslintConfig": {
+    "extends": "mdcs",
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint",
+      "html"
+    ],
+    "rules": {
+      "@typescript-eslint/indent": [
+        {
+          "SwitchCase": 1
+        },
+        "error",
+        "tab"
+      ],
+      "@typescript-eslint/no-unused-vars": 1
+    }
+  },
+  "gitHead": "6972df7cace4c23cbabab49e9857e771826e1685",
+  "homepage": "https://threejs.org/",
+  "jspm": {
+    "directories": {},
+    "files": [
+      "LICENSE",
+      "README.md",
+      "build/three.js",
+      "build/three.min.js",
+      "build/three.module.js",
+      "package.json"
+    ]
+  },
+  "keywords": [
+    "3d",
+    "augmented-reality",
+    "canvas",
+    "html5",
+    "javascript",
+    "svg",
+    "three",
+    "three.js",
+    "virtual-reality",
+    "webaudio",
+    "webgl",
+    "webgl2",
+    "webxr"
+  ],
+  "license": "MIT",
+  "main": "build/three.js",
+  "maintainers": [
+    {
+      "name": "bhouston",
+      "email": "ben@exocortex.com"
+    },
+    {
+      "name": "cabbibo",
+      "email": "isaaclandoncohen@gmail.com"
+    },
+    {
+      "name": "mrdoob",
+      "email": "info@mrdoob.com"
+    }
+  ],
+  "module": "build/three.module.js",
+  "name": "three",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrdoob/three.js.git"
+  },
+  "scripts": {
+    "build": "rollup -c utils/build/rollup.config.js",
+    "build-closure": "rollup -c utils/build/rollup.config.js && google-closure-compiler --warning_level=VERBOSE --jscomp_off=globalThis --jscomp_off=checkTypes --externs utils/build/externs.js --language_in=ECMASCRIPT5_STRICT --js build/three.js --js_output_file build/three.min.js",
+    "dev": "concurrently --names \"ROLLUP,HTTP\" -c \"bgBlue.bold,bgGreen.bold\" \"rollup -c utils/build/rollup.config.js -w -m inline\" \"http-server -c-1 -p 8080\"",
+    "dev-test": "concurrently --names \"ROLLUP,ROLLUPTEST,HTTP\" -c \"bgBlue.bold,bgRed.bold,bgGreen.bold\" \"rollup -c utils/build/rollup.config.js -w -m inline\" \"npm run dev --prefix test\" \"http-server -p 8080\"",
+    "lint-docs": "eslint docs --ext html",
+    "lint-examples": "eslint examples/jsm --ext js --ext ts --ignore-pattern libs && tsc -p utils/build/tsconfig-examples.lint.json",
+    "make-screenshot": "node test/e2e/puppeteer.js --make",
+    "start": "npm run dev",
+    "test": "npm run test-lint && npm run test-unit",
+    "test-e2e": "node test/e2e/puppeteer.js",
+    "test-e2e-cov": "node test/e2e/check-coverage.js",
+    "test-lint": "eslint src --ext js --ext ts && tsc -p utils/build/tsconfig.lint.json",
+    "test-unit": "npm run unit --prefix test"
+  },
+  "types": "src/Three.d.ts",
+  "version": "0.119.1"
+}
