@@ -7,7 +7,7 @@ var container, controls;
 var camera, scene, renderer;
 
 var cameraLimit = 12;
-var randomSpread = 2;
+var randomSpread = 3;
 
 var cameraCenter = new THREE.Vector3();
 var cameraHorzLimit = 1;
@@ -19,8 +19,10 @@ var orb;
 var trajectories= [];
 var activation = 0.02;
 
+
 init();
 render();
+
 
 function init() {
     container = document.querySelector('.orb');
@@ -107,31 +109,23 @@ function init() {
                     child.material = transluscent;
                     child.castShadow = true;
                     child.receiveShadow = true;  
-                    // child.visible = false;
                 }
 
                 // hide original cube
                 if (child.name == "Cube")
                 {
-                    console.log(child.name);
                     orb = child;
-                    // child.visible = true;
                 }
 
                 // translate shards
                 if (child instanceof THREE.Object3D && child.name.includes("0"))
                 {
-                    console.log(child.name);
-                    // child.visible = false;
                     let start = child.position.clone();
                     let move = getTrajectory();
                     let newTrajectory = {'object':child, 'start':start, 'move':move}
                     trajectories.push( newTrajectory );
-                    // updateShards();
                 }
-            });
-
-            console.log(trajectories);           
+            });     
 
             render();        
 
@@ -161,64 +155,80 @@ function init() {
 
     camera.position.z = cameraLimit;
 
+    
     window.addEventListener('resize', onWindowResize, false);
-    console.log(controls);
     document.addEventListener('mousemove', function(event) {
         onDocumentMouseMove(event)
     });
-    document.addEventListener('mousedown', function(event, controls) {
-        onDocumentMouseMove(event)
-    });
-      
+    document.querySelector("#orb-trigger").addEventListener('mouseenter', animateShatter, true);
+    document.querySelector("#orb-trigger").addEventListener('mousedown', animateShatter, true);
+    // document.querySelector("#orb-trigger").addEventListener('mouseout', animateMend, true);
+
 
     render();
     animate();
 }
 
-function animate () {
-    
-    requestAnimationFrame( animate );
 
-    updateShards();
+
+// ANIMATIONS
+
+function animateShatter(){
+    // var mouseCont = document.querySelector("#mouse");
+    // mouseCont.innerHTML = "mouse enter";
+
+    TweenMax.to( camera.position, 1, {
+        ease: Power2.easeOut,
+        z: cameraLimit*1.5
+    });
+
+    orb.visible = false;
+
+    for (var i = 0; i < trajectories.length; i++)
+    {
+        TweenMax.to( trajectories[i].object.position, 1.5, {
+            ease: Power2.easeOut,
+			x: trajectories[i].move.x,  
+			y: trajectories[i].move.y, 
+			z: trajectories[i].move.z
+        }).delay(0.5);
+    }
+    console.log(trajectories);
+	
+	// console.log(animationVars.rotation)
+	
+}
+
+function animateMend(){
+    var mouseCont = document.querySelector("#mouse");
+    mouseCont.innerHTML = "mouse leave";
+}
+
+
+function animate () {  
+    updateCamera();
+    requestAnimationFrame( animate );
 
     gemCells.rotation.x += 0.005;
     gemCells.rotation.y += 0.005;
 
-    // controls.update();
     render();
 	
 }
 
-
-function updateShards() {
-    // console.log(trajectories[0]?.object?.position);
-    for (var i = 0; i < trajectories.length; i++)
-    {
-        // getMouseDistance();
-        var trigger = curveFunction(getMouseDistance());
-        var mouseCont = document.querySelector('#mouse');
-        // mouseCont.innerHTML = (mouse.x+mouse.y)/2;
-
-        if (trigger < 0.0001)
-        {
-            // whole orb
-            orb.visible = true;
-        }
-        else
-        {
-            // hide orb, show shards
-            orb.visible = false;
-            trajectories[i].object.visible = true;
-
-            // move shards
-            var translate = new THREE.Vector3();
-            translate.add(trajectories[i].move);
-            translate.multiplyScalar(trigger);
-            translate.add(trajectories[i].start);
-            trajectories[i].object.position.copy(translate);
-        }
-    }
+function render() {
+    renderer.render( scene, camera );
 }
+
+
+// UPDATE FUNCTIONS
+
+function updateCamera() {
+    //offset the camera x/y based on the mouse's position in the window
+    camera.position.x = cameraCenter.x + (cameraHorzLimit * mouse.x);
+    camera.position.y = cameraCenter.y + (cameraVertLimit * mouse.y);
+}
+
 
 function onDocumentMouseMove(event) {
     event.preventDefault();
@@ -236,11 +246,6 @@ function onWindowResize() {
     render();
 }
 
-//
-
-function render() {
-    renderer.render( scene, camera );
-}
 
 
 function getTrajectory() {
@@ -254,19 +259,7 @@ function getTrajectory() {
     return new THREE.Vector3(x, y, z);
 }
 
-function getMouseDistance(){
-    // var center = {'x':window.innerWidth/2, 'y':window.innerHeight/2 };
 
-    // var totalDist = Math.sqrt(Math.pow((window.innerWidth-center.x), 2)+Math.pow((window.innerHeight-center.y), 2));
-    var dist = Math.sqrt(Math.pow((mouse.x), 2)+Math.pow((mouse.y), 2));
-
-    return dist;
-}
-
-function curveFunction(x){
-    let exponent = -(Math.pow(x, 2))/activation;
-    return Math.pow(Math.E, exponent);
-}
 
 function dumpObject(obj, lines = [], isLast = true, prefix = '') {
     const localPrefix = isLast ? '└─' : '├─';

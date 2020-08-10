@@ -22,20 +22,24 @@
 
       <!-- Background -->
   
-      <!-- <script src="../assets/js/three/build/three.js"></script> -->
-<!-- <scropt stc="../assets/js/three/examples/jsm/loaders/GLTFLoader.js"></scropt> -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
 <script type="module" src="/assets/js/src/orb.js"></script>
 
-
 <div class="background">
+    <div class="animation-trigger" id="orb-trigger"></div>
     <div class="orb"></div>
+    
     <div id="mouse" style="position: fixed; color:white; font-size:10vw;"></div>
 </div>
-<div class="wave">
+<!-- <div class="wave">
     <div class="text">
         HOME
     </div>
-</div>
+</div> -->
+
+
+
+
     
     <!-- Page Header -->
     <header class="page-header">
@@ -48,6 +52,7 @@
         <a id="archive" href="">about</a>
         <a id="archive" href="">links</a>
       </div>
+      <div class="mode-toggle"></div>
       
     </header>     
 

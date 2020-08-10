@@ -90,6 +90,17 @@ body {
 
       
     }
+
+    .mode-toggle {
+      float: right;
+      width: 5vw;
+      height: 5vw;
+
+      background-image: url(../main/sun.png);
+      // filter: invert(100%);
+      opacity: 0.8;
+
+    }
 }
 
 
