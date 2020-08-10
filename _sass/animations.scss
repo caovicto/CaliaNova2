@@ -1,0 +1,27 @@
+@import "variables";
+
+@keyframes morph {
+    0% {
+        border-radius:  60% 40% 0% 0% / 60% 30% 0% 0%;
+        background: linear-gradient(45deg, $wave-color 0%, $wave-color2 100%);
+      } 
+      
+      50% {
+        border-radius:  30% 60% 0% 0% / 50% 60% 0% 0%;
+        background: linear-gradient(45deg, $wave-color3 0%, $wave-color2 100%);
+      }
+    
+      100% {
+        border-radius:  60% 40% 0% 0% / 60% 30% 0% 0%;
+        background: linear-gradient(45deg, $wave-color 0%, $wave-color2 100%);
+      } 
+  }
+
+@keyframes animate {
+  0%, 100% {
+    transform: translateY(-2vw) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(1vw) rotate(2deg);
+  }
+}
