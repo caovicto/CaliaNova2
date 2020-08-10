@@ -1,0 +1,6 @@
+sass:
+  style: compressed
+  
+collections:
+        archive:
+                output: true

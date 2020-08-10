@@ -1,0 +1,104 @@
+@import "normalize";
+@import "rouge-github";
+@import "variables";
+@import "background";
+
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:900i&display=swap');
+
+
+@mixin large {
+  @media screen and (min-width: #{$large-breakpoint}) {
+    @content;
+  }
+}
+
+@mixin medium {
+  @media screen and (min-width: #{$medium-breakpoint}) and (max-width: #{$large-breakpoint}) {
+    @content;
+  }
+}
+
+@mixin small {
+  @media screen and (max-width: #{$medium-breakpoint}) {
+    @content;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif; 
+}
+
+body {
+  height: 100%;
+
+}
+
+
+.page-header {
+    position: abolute;
+}
+
+
+
+.main-content {
+    word-wrap: break-word;
+    animation:unfoldIn 1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+  
+    :first-child {
+      margin-top: 0;
+    }
+  
+    @include large {
+      max-width: 64rem;
+      padding: 2rem 6rem;
+      margin: 0 auto;
+      font-size: 1.1rem;
+    }
+  
+    @include medium {
+      padding: 2rem 4rem;
+      font-size: 1.1rem;
+    }
+  
+    @include small {
+      padding: 2rem 1rem;
+      font-size: 1rem;
+    }
+    
+    kbd {
+      background-color: #fafbfc;
+      border: 1px solid #c6cbd1;
+      border-bottom-color: #959da5;
+      border-radius: 3px;
+      box-shadow: inset 0 -1px 0 #959da5;
+      color: #444d56;
+      display: inline-block;
+      font-size: 11px;
+      line-height: 10px;
+      padding: 3px 5px;
+      vertical-align: middle;
+    }
+  
+    img {
+      max-width: 100%;
+    }
+  
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-weight: normal;
+      color: $section-headings-color;
+    }
+  
+    p {
+      margin-bottom: 1em;
+    }
+  
+}
