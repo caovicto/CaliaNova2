@@ -12,7 +12,7 @@ var randomSpread = 3;
 var cameraCenter = new THREE.Vector3();
 var cameraHorzLimit = 1;
 var cameraVertLimit = 1;
-var mouse = new THREE.Vector2(1, 1);
+var mouse = new THREE.Vector2();
 
 var gemCells;
 var orb;
