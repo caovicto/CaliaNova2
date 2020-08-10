@@ -7,6 +7,7 @@ var container, controls;
 var camera, scene, renderer;
 
 var cameraLimit = 20;
+var randomSpread = 5;
 
 var cameraCenter = new THREE.Vector3();
 var cameraHorzLimit = 1;
@@ -29,7 +30,8 @@ function init() {
     var ambientLight = new THREE.AmbientLight( 0x32acb3 );
     scene.add( ambientLight );
 
-    var ambientLight2 = new THREE.AmbientLight( 0xcccccc );
+    var ambientLight2 = new THREE.AmbientLight( 0x412475);
+    ambientLight2.position.set( 1, 0, 1 ).normalize();
     // scene.add( ambientLight2 );
             
     var directionalLight = new THREE.DirectionalLight( 0xd4deff );
@@ -38,15 +40,15 @@ function init() {
     
     var directionalLight2 = new THREE.DirectionalLight( 0xd4deff );
     directionalLight2.position.set( 0, 0, 1 ).normalize();
-    scene.add( directionalLight2 );
+    // scene.add( directionalLight2 );
 
-    var directionalLightPurple = new THREE.DirectionalLight( 0xa14aff );
-    directionalLightPurple.position.set( 1, 0, 1 ).normalize();
-    scene.add( directionalLightPurple );	
+    var directionalLightBlue = new THREE.DirectionalLight( 0xb5fffe );
+    directionalLightBlue.position.set( 1, 0, 1 ).normalize();
+    scene.add( directionalLightBlue );	
 
     var directionalLightPink = new THREE.DirectionalLight( 0xf7b0ff );
     directionalLightPink.position.set( 0, 1, 1 ).normalize();
-    // scene.add( directionalLightPink );	
+    scene.add( directionalLightPink );	
 
     var directionalLightPink2 = new THREE.DirectionalLight( 0xf7b0ff );
     directionalLightPink2.position.set( 1, 0, 0 ).normalize();
@@ -68,7 +70,7 @@ function init() {
         specular: 0xffffff, 
         shininess: 100, 
         premultipliedAlpha: true,
-        opacity: 0.85,
+        opacity: 0.7,
         envMap: texture,
         shading: THREE.SmoothShading, 
         refractionRatio: 0.5, 
@@ -116,11 +118,11 @@ function init() {
                 if (child instanceof THREE.Object3D && child.name.includes("0"))
                 {
                     console.log(child.name);
-                    child.position.x = Math.random() * (cameraLimit/5); 
+                    child.position.x = Math.random() * (cameraLimit/randomSpread+1); 
                     child.position.x *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-                    child.position.y = Math.random() * (cameraLimit/6);
+                    child.position.y = Math.random() * (cameraLimit/(randomSpread+1));
                     child.position.y *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-                    child.position.z = Math.random() * (cameraLimit/7);
+                    child.position.z = Math.random() * (cameraLimit/(randomSpread));
                     child.position.z *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
                 }
                 

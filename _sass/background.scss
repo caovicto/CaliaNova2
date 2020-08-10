@@ -42,7 +42,7 @@
     text-align: center;
 
     background: $wave-color;
-    opacity: 0.25;
+    opacity: 0.3;
 
     background: linear-gradient(45deg, $wave-color 0%, $wave-color2 100%);
     animation: morph 8s ease-in-out infinite;
@@ -56,10 +56,10 @@
 
         font-size: 20vw;
 
-        color: filter($theme-pink);
+        // color: $theme-pink;
 
         animation: animate 8s ease-in-out infinite;
-        transform: translateY(-2vh);
+        transform: translateY(-1vh);
         animation-delay: calc(0.05s * var(--text-index))
     }
 }

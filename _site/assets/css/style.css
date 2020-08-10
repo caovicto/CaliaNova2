@@ -258,16 +258,16 @@ td, th { padding: 0; }
   100% { border-radius: 60% 40% 0% 0% / 60% 30% 0% 0%;
     background: linear-gradient(45deg, #4b528f 0%, #4b528f 100%); } }
 
-@keyframes animate { 0%, 100% { transform: translateY(-2vw) rotate(-2deg); }
+@keyframes animate { 0%, 100% { transform: translateY(-1vw) rotate(-2deg); }
   50% { transform: translateY(1vw) rotate(2deg); } }
 
 .background { position: absolute; background-repeat: no-repeat; background-size: contain; width: 100vw; height: 100vh; background-color: #110e26; background-size: contain; display: flex; }
 
 .orb { padding: 0; position: absolute; z-index: 3; }
 
-.wave { position: absolute; height: 80vh; width: 100vw; margin-top: 20vh; z-index: 2; display: block; text-align: center; background: #4b528f; opacity: 0.25; background: linear-gradient(45deg, #4b528f 0%, #4b528f 100%); animation: morph 8s ease-in-out infinite; border-radius: 60% 40% 0% 0% / 60% 30% 0% 0%; transition: all 1s ease-in-out; }
+.wave { position: absolute; height: 80vh; width: 100vw; margin-top: 20vh; z-index: 2; display: block; text-align: center; background: #4b528f; opacity: 0.3; background: linear-gradient(45deg, #4b528f 0%, #4b528f 100%); animation: morph 8s ease-in-out infinite; border-radius: 60% 40% 0% 0% / 60% 30% 0% 0%; transition: all 1s ease-in-out; }
 
-.wave .text { padding-top: 10vw; margin: 0 auto; font-size: 20vw; color: filter(#c86b84); animation: animate 8s ease-in-out infinite; transform: translateY(-2vh); animation-delay: calc(0.05s * var(--text-index)); }
+.wave .text { padding-top: 10vw; margin: 0 auto; font-size: 20vw; animation: animate 8s ease-in-out infinite; transform: translateY(-1vh); animation-delay: calc(0.05s * var(--text-index)); }
 
 * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
