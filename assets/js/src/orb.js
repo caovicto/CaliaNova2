@@ -6,7 +6,7 @@ import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoade
 var container, controls;
 var camera, scene, renderer;
 
-var cameraLimit = 12;
+var cameraLimit = 10;
 var randomSpread = 3;
 
 var cameraCenter = new THREE.Vector3();
@@ -186,7 +186,7 @@ function animateShatter(){
 
     for (var i = 0; i < trajectories.length; i++)
     {
-        TweenMax.to( trajectories[i].object.position, 1.5, {
+        TweenMax.to( trajectories[i].object.position, 1, {
             ease: Power2.easeOut,
 			x: trajectories[i].move.x,  
 			y: trajectories[i].move.y, 
