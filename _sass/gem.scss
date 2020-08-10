@@ -37,14 +37,11 @@ body {
 
 
 .page-header {
-    position: abolute;
-    // display: inline-block;
-    width: 100vw;
+    position: fixed;
+    display: inline-flex;
 
-    // display: inline-block;
 
     .logo {
-      position: absolute;
       padding: 1vw;
       max-width: 12vw;
       max-height: 12vw;
@@ -62,15 +59,37 @@ body {
 
     }
 
-    // .bar {
-    //   position: absolute;
-    //   padding: 1vw;
+    .bar {
+      margin: auto;
 
-    //   width: 1vw;
-    //   height: 2vw;
+      width: 0.2vw;
+      height: 3vw;
 
-    //   background: $theme-pink;
-    // }
+      background: $theme-pink;
+    }
+
+    .links {
+      margin: auto;
+      
+
+      a {
+        padding: 0 2vw 0 2vw;
+        font-size: calc(12px + 0.7vw);
+        text-transform: uppercase;
+        text-decoration: none;
+        color: $theme-pink;
+
+        &:hover {
+          
+          
+          color: $theme-pinkLite;
+        }
+
+
+      }
+
+      
+    }
 }
 
 

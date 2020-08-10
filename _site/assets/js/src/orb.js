@@ -6,15 +6,18 @@ import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoade
 var container, controls;
 var camera, scene, renderer;
 
-var cameraLimit = 20;
-var randomSpread = 5;
+var cameraLimit = 12;
+var randomSpread = 2;
 
 var cameraCenter = new THREE.Vector3();
 var cameraHorzLimit = 1;
 var cameraVertLimit = 1;
-var mouse = new THREE.Vector2();
+var mouse = new THREE.Vector2(1, 1);
 
-var gem;
+var gemCells;
+var orb;
+var trajectories= [];
+var activation = 0.02;
 
 init();
 render();
@@ -56,8 +59,6 @@ function init() {
 
 
 
-
-
     /**         LOAD TEXTURE        **/
     var urls = [ "assets/models/textures/sample_bg.png" ];
     var texture = new THREE.TextureLoader( "assets/models/textures/sample_bg.png" );
@@ -66,15 +67,16 @@ function init() {
 
     var transluscent = new THREE.MeshPhongMaterial( {
         color: 0x7442ff, 
-        // emissive: 0x8f66ff,
+        emissive: 0x7442ff,
         specular: 0xffffff, 
         shininess: 100, 
-        premultipliedAlpha: true,
-        opacity: 0.7,
+        // premultipliedAlpha: true,
+        // opacity: 0.95,
         envMap: texture,
         shading: THREE.SmoothShading, 
         refractionRatio: 0.5, 
-        reflectivity: 0.9 } );
+        reflectivity: 0.95 
+    } );
 
 
     /**         INITIALIZE LOADER       **/
@@ -85,8 +87,8 @@ function init() {
         'orb.glb',
         // called when the resource is loaded
         function ( gltf ) {
-            // set and keep gem
-            gem = gltf.scene;				
+            // set and keep gemCells
+            gemCells = gltf.scene;				
             gltf.scene.scale.set( 2, 2, 2 );			   
             gltf.scene.position.x = 0;				    //Position (x = right+ left-) 
             gltf.scene.position.y = 0;				    //Position (y = up+, down-)
@@ -95,54 +97,52 @@ function init() {
             scene.add( gltf.scene );
 
             // loading debug
-            console.log(dumpObject(gltf.scene).join('\n'));
+            // console.log(dumpObject(gltf.scene).join('\n'));
 
             // update children
-            gem.traverse(function(child) {
+            gemCells.traverse(function(child) {
                 // update transluscent mesh
                 if (child instanceof THREE.Mesh)
                 {
                     child.material = transluscent;
                     child.castShadow = true;
                     child.receiveShadow = true;  
+                    // child.visible = false;
                 }
 
                 // hide original cube
                 if (child.name == "Cube")
                 {
                     console.log(child.name);
-                    child.visible = false;
+                    orb = child;
+                    // child.visible = true;
                 }
 
                 // translate shards
                 if (child instanceof THREE.Object3D && child.name.includes("0"))
                 {
                     console.log(child.name);
-                    child.position.x = Math.random() * (cameraLimit/randomSpread+1); 
-                    child.position.x *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-                    child.position.y = Math.random() * (cameraLimit/(randomSpread+1));
-                    child.position.y *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-                    child.position.z = Math.random() * (cameraLimit/(randomSpread));
-                    child.position.z *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+                    // child.visible = false;
+                    let start = child.position.clone();
+                    let move = getTrajectory();
+                    let newTrajectory = {'object':child, 'start':start, 'move':move}
+                    trajectories.push( newTrajectory );
+                    // updateShards();
                 }
-                
-
             });
+
+            console.log(trajectories);           
 
             render();        
 
         },
         // called while loading is progressing
         function ( xhr ) {
-
             console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' );
-
         },
         // called when loading has errors
         function ( error ) {
-
             console.log( 'An error happened' );
-
         }
     );
 
@@ -163,37 +163,68 @@ function init() {
 
     window.addEventListener('resize', onWindowResize, false);
     console.log(controls);
-    document.addEventListener('mousemove', function(event, controls) {
+    document.addEventListener('mousemove', function(event) {
         onDocumentMouseMove(event)
     });
+    document.addEventListener('mousedown', function(event, controls) {
+        onDocumentMouseMove(event)
+    });
+      
 
     render();
     animate();
 }
 
 function animate () {
-    updateCamera();
+    
     requestAnimationFrame( animate );
 
-    gem.rotation.x += 0.001;
-    gem.rotation.y += 0.003;
+    updateShards();
 
+    gemCells.rotation.x += 0.005;
+    gemCells.rotation.y += 0.005;
 
     // controls.update();
     render();
 	
 }
 
-function updateCamera() {
-    //offset the camera x/y based on the mouse's position in the window
-    camera.position.x = cameraCenter.x + (cameraHorzLimit * mouse.x);
-    camera.position.y = cameraCenter.y + (cameraVertLimit * mouse.y);
+
+function updateShards() {
+    // console.log(trajectories[0]?.object?.position);
+    for (var i = 0; i < trajectories.length; i++)
+    {
+        // getMouseDistance();
+        var trigger = curveFunction(getMouseDistance());
+        var mouseCont = document.querySelector('#mouse');
+        // mouseCont.innerHTML = (mouse.x+mouse.y)/2;
+
+        if (trigger < 0.0001)
+        {
+            // whole orb
+            orb.visible = true;
+        }
+        else
+        {
+            // hide orb, show shards
+            orb.visible = false;
+            trajectories[i].object.visible = true;
+
+            // move shards
+            var translate = new THREE.Vector3();
+            translate.add(trajectories[i].move);
+            translate.multiplyScalar(trigger);
+            translate.add(trajectories[i].start);
+            trajectories[i].object.position.copy(translate);
+        }
+    }
 }
 
 function onDocumentMouseMove(event) {
     event.preventDefault();
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    
 }
 
 function onWindowResize() {
@@ -208,9 +239,33 @@ function onWindowResize() {
 //
 
 function render() {
-
     renderer.render( scene, camera );
+}
 
+
+function getTrajectory() {
+    let x = Math.random() * (cameraLimit/randomSpread); 
+    x *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+    let y = Math.random() * (cameraLimit/(randomSpread));
+    y *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+    let z = Math.random() * (cameraLimit/(randomSpread));
+    z *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
+
+    return new THREE.Vector3(x, y, z);
+}
+
+function getMouseDistance(){
+    // var center = {'x':window.innerWidth/2, 'y':window.innerHeight/2 };
+
+    // var totalDist = Math.sqrt(Math.pow((window.innerWidth-center.x), 2)+Math.pow((window.innerHeight-center.y), 2));
+    var dist = Math.sqrt(Math.pow((mouse.x), 2)+Math.pow((mouse.y), 2));
+
+    return dist;
+}
+
+function curveFunction(x){
+    let exponent = -(Math.pow(x, 2))/activation;
+    return Math.pow(Math.E, exponent);
 }
 
 function dumpObject(obj, lines = [], isLast = true, prefix = '') {
@@ -223,12 +278,5 @@ function dumpObject(obj, lines = [], isLast = true, prefix = '') {
       dumpObject(child, lines, isLast, newPrefix);
     });
     return lines;
-  }
+}
 
-  function dumpList(list, lines = []) {
-    for (var ele in list)
-    {
-        lines.push(ele.name);
-    }
-    return lines;
-  }

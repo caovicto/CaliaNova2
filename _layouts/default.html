@@ -28,6 +28,9 @@
     <!-- Main JS Includes: JQuery 3.5.1 -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
 
+      <!-- Background -->
+  
+      {% include background.html %}
     
     <!-- Page Header -->
     <header class="page-header">
@@ -35,12 +38,15 @@
         <img src="{{ site.baseurl }}/assets/main/logo.png">
       </div>
       <div class="bar"></div>
+      <div class="links">
+        <a id="archive" href="{{ site.baseurl }}">archive</a>
+        <a id="archive" href="{{ site.baseurl }}">about</a>
+        <a id="archive" href="{{ site.baseurl }}">links</a>
+      </div>
       
     </header>     
 
-    <!-- Background -->
-    
-    {% include background.html %}
+
 
 
     <!-- Page Content -->
