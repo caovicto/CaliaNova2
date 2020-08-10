@@ -32,24 +32,28 @@ function init() {
     scene = new THREE.Scene();
                 
     /**         LOAD LIGHTING       **/
-    var ambientLight = new THREE.AmbientLight( 0x32acb3 );
-    scene.add( ambientLight );
+    // var light = new THREE.PointLight( 0xff0000, 1, 100 );
+    // light.position.set( 50, 50, 50 );
+    // scene.add( light );
 
-    var ambientLight2 = new THREE.AmbientLight( 0x412475);
+    var ambientLight = new THREE.AmbientLight( 0xf1edff);
+    // scene.add( ambientLight );
+
+    var ambientLight2 = new THREE.AmbientLight( 0xffffff );
     ambientLight2.position.set( 1, 0, 1 ).normalize();
     // scene.add( ambientLight2 );
             
-    var directionalLight = new THREE.DirectionalLight( 0xd4deff );
+    var directionalLight = new THREE.DirectionalLight( 0xffffff );
     directionalLight.position.set( 0, 1, 1 ).normalize();
     scene.add( directionalLight );
     
-    var directionalLight2 = new THREE.DirectionalLight( 0xd4deff );
+    var directionalLight2 = new THREE.DirectionalLight( 0xF37B9A, );
     directionalLight2.position.set( 0, 0, 1 ).normalize();
-    // scene.add( directionalLight2 );
+    scene.add( directionalLight2 );
 
     var directionalLightBlue = new THREE.DirectionalLight( 0xb5fffe );
     directionalLightBlue.position.set( 1, 0, 1 ).normalize();
-    scene.add( directionalLightBlue );	
+    // scene.add( directionalLightBlue );	
 
     var directionalLightPink = new THREE.DirectionalLight( 0xf7b0ff );
     directionalLightPink.position.set( 0, 1, 1 ).normalize();
@@ -59,26 +63,27 @@ function init() {
     directionalLightPink2.position.set( 1, 0, 0 ).normalize();
     // scene.add( directionalLightPink2 );	
 
-
+    /**         LOAD FOG            **/
+    scene.fog = new THREE.Fog(0x4000ff);
 
     /**         LOAD TEXTURE        **/
-    var urls = [ "assets/models/textures/sample_bg.png" ];
-    var texture = new THREE.TextureLoader( "assets/models/textures/sample_bg.png" );
-    var quad = new THREE.Mesh(new THREE.PlaneBufferGeometry(), new THREE.MeshBasicMaterial({map: texture}));
+    var loader = new THREE.CubeTextureLoader();
+    loader.setPath( 'assets/models/textures/' );
 
+    var texture = new THREE.TextureLoader().load( 'assets/models/textures/facet.jpg' );
 
-    var transluscent = new THREE.MeshPhongMaterial( {
-        color: 0x7442ff, 
-        emissive: 0x7442ff,
-        specular: 0xffffff, 
-        shininess: 100, 
-        // premultipliedAlpha: true,
-        // opacity: 0.95,
-        envMap: texture,
-        shading: THREE.SmoothShading, 
-        refractionRatio: 0.5, 
-        reflectivity: 0.95 
-    } );
+    var gemTexture = new THREE.MeshPhongMaterial( {
+        map: texture,
+        color: 0x2f0787,
+        combine: THREE.MixOperation,
+        // specular: 0x07155c, 
+        reflectivity: 90,
+        // emissive: 0x1b0c4d, 
+        // emissiveIntensity: 0.7,
+        shininess: 50, 
+        opacity: 0.8,         
+        transparent: true 
+    }); 
 
 
     /**         INITIALIZE LOADER       **/
@@ -103,10 +108,10 @@ function init() {
 
             // update children
             gemCells.traverse(function(child) {
-                // update transluscent mesh
+                // update gemTexture mesh
                 if (child instanceof THREE.Mesh)
                 {
-                    child.material = transluscent;
+                    child.material = gemTexture;
                     child.castShadow = true;
                     child.receiveShadow = true;  
                 }
