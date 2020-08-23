@@ -6,29 +6,18 @@ import { GLTFLoader } from '../node_modules/three/examples/jsm/loaders/GLTFLoade
 var container, controls;
 var camera, scene, renderer;
 
-var cameraLimit = 7;
-var randomSpreadShards = 20;
-var randomSpreadStars = 100;
+var cameraLimit = 10;
+var randomSpread = 3;
 
 var cameraCenter = new THREE.Vector3();
 var cameraHorzLimit = 1;
 var cameraVertLimit = 1;
 var mouse = new THREE.Vector2();
 
-
-var particleSystem = new Array();
-
 var gemCells;
 var orb;
 var trajectories= [];
-var gemRotation = 0.005;
-
-
-
-// stars
-var starTypes = 7;
-var starCount = 500/starTypes;
-var stars = new Array();
+var activation = 0.02;
 
 
 init();
@@ -48,15 +37,14 @@ function init() {
     // scene.add( light );
 
     var ambientLight = new THREE.AmbientLight( 0xf1edff);
-    ambientLight.position.set( 1, 0, 0 ).normalize();
-    scene.add( ambientLight );
+    // scene.add( ambientLight );
 
     var ambientLight2 = new THREE.AmbientLight( 0xffffff );
-    ambientLight2.position.set( 0, 1, 0 ).normalize();
-    scene.add( ambientLight2 );
+    ambientLight2.position.set( 1, 0, 1 ).normalize();
+    // scene.add( ambientLight2 );
             
     var directionalLight = new THREE.DirectionalLight( 0xffffff );
-    directionalLight.position.set( 1, 1, 0 ).normalize();
+    directionalLight.position.set( 0, 1, 1 ).normalize();
     scene.add( directionalLight );
     
     var directionalLight2 = new THREE.DirectionalLight( 0xF37B9A, );
@@ -65,20 +53,23 @@ function init() {
 
     var directionalLightBlue = new THREE.DirectionalLight( 0xb5fffe );
     directionalLightBlue.position.set( 1, 0, 1 ).normalize();
-    scene.add( directionalLightBlue );	
+    // scene.add( directionalLightBlue );	
 
     var directionalLightPink = new THREE.DirectionalLight( 0xf7b0ff );
     directionalLightPink.position.set( 0, 1, 1 ).normalize();
     scene.add( directionalLightPink );	
 
     var directionalLightPink2 = new THREE.DirectionalLight( 0xf7b0ff );
-    directionalLightPink2.position.set( 1, 1, 1 ).normalize();
-    scene.add( directionalLightPink2 );	
+    directionalLightPink2.position.set( 1, 0, 0 ).normalize();
+    // scene.add( directionalLightPink2 );	
 
     /**         LOAD FOG            **/
     scene.fog = new THREE.Fog(0x4000ff);
 
     /**         LOAD TEXTURE        **/
+    var loader = new THREE.CubeTextureLoader();
+    loader.setPath( 'assets/models/textures/' );
+
     var texture = new THREE.TextureLoader().load( 'assets/models/textures/facet.jpg' );
 
     var gemTexture = new THREE.MeshPhongMaterial( {
@@ -91,8 +82,7 @@ function init() {
         // emissiveIntensity: 0.7,
         shininess: 50, 
         opacity: 0.8,         
-        transparent: true,
-        flatShading: THREE.SmoothShading
+        transparent: true 
     }); 
 
 
@@ -112,6 +102,9 @@ function init() {
             gltf.scene.position.z = 0;				    //Position (z = front +, back-)
 
             scene.add( gltf.scene );
+
+            // loading debug
+            // console.log(dumpObject(gltf.scene).join('\n'));
 
             // update children
             gemCells.traverse(function(child) {
@@ -133,12 +126,9 @@ function init() {
                 if (child instanceof THREE.Object3D && child.name.includes("0"))
                 {
                     let start = child.position.clone();
-                    let move = getTrajectory(randomSpreadShards);
+                    let move = getTrajectory();
                     let newTrajectory = {'object':child, 'start':start, 'move':move}
                     trajectories.push( newTrajectory );
-
-
-
                 }
             });     
 
@@ -154,40 +144,6 @@ function init() {
             console.log( 'An error happened' );
         }
     );
-
-    
-    /**         PARTICLE SYSTEM           **/
-    for(let i = 1; i < starTypes+1; i++)
-    {
-        var starMaterial = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            transparent: true,
-            map: new THREE.TextureLoader().load(
-                'assets/models/textures/stars/star_'+i.toString()+'.png'
-            ),
-            side: THREE.DoubleSide
-        });
-
-        // var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-
-        // copy to debris
-        for (var p = 0; p < starCount; ++p)
-        {
-            var starGeometry = new THREE.PlaneGeometry();
-            var position = getTrajectory(randomSpreadStars);
-            starGeometry.translate(position.x, position.y+10, position.z);
-            var star = new THREE.Mesh(starGeometry, starMaterial);
-
-            stars.push(star);
-            scene.add(star);
-        }
-    }
-
-
-  
-
-
-    /**         RENDERING AND CAMERA           **/
 
     renderer = new THREE.WebGLRenderer( { 
         antialias: true,
@@ -211,6 +167,7 @@ function init() {
     });
     document.querySelector("#orb-trigger").addEventListener('mouseenter', animateShatter, true);
     document.querySelector("#orb-trigger").addEventListener('mousedown', animateShatter, true);
+    // document.querySelector("#orb-trigger").addEventListener('mouseout', animateMend, true);
 
 
     render();
@@ -222,50 +179,43 @@ function init() {
 // ANIMATIONS
 
 function animateShatter(){
+    // var mouseCont = document.querySelector("#mouse");
+    // mouseCont.innerHTML = "mouse enter";
+
     TweenMax.to( camera.position, 1, {
         ease: Power2.easeOut,
-        z: cameraLimit*3
+        z: cameraLimit*1.5
     });
 
     orb.visible = false;
 
     for (var i = 0; i < trajectories.length; i++)
     {
-        TweenMax.to( trajectories[i].object.position, 2, {
+        TweenMax.to( trajectories[i].object.position, 1, {
             ease: Power2.easeOut,
 			x: trajectories[i].move.x,  
 			y: trajectories[i].move.y, 
 			z: trajectories[i].move.z
         }).delay(0.5);
     }
-
-
-    TweenMax.to( $("#landing"), 3, {
-        ease: Power2.easeOut,
-        zIndex: "-99"
-    });
-
-    // TweenMax.to( $("#content"), 1, {
-    //     visibility: "visible"
-    // }).delay(3);
-
-
-    $("#orb-trigger").hide();	
-
-    gemRotation = 0;
+    console.log(trajectories);
+	
+	// console.log(animationVars.rotation)
+	
 }
 
+function animateMend(){
+    var mouseCont = document.querySelector("#mouse");
+    mouseCont.innerHTML = "mouse leave";
+}
+
+
 function animate () {  
-    // updateCamera();
+    updateCamera();
     requestAnimationFrame( animate );
 
-    // gemCells.rotation.x += 0.005;
-    gemCells.rotation.y += gemRotation;
-    scene.rotation.y += 0.001;
-
-    // stars.forEach( function(star) {
-    //     star.rotation.y += 0.005;
-    // });    
+    gemCells.rotation.x += 0.005;
+    gemCells.rotation.y += 0.005;
 
     render();
 	
@@ -303,12 +253,12 @@ function onWindowResize() {
 
 
 
-function getTrajectory(limit) {
-    let x = Math.random() * (limit); 
+function getTrajectory() {
+    let x = Math.random() * (cameraLimit/randomSpread); 
     x *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-    let y = Math.random() * (limit);
+    let y = Math.random() * (cameraLimit/(randomSpread));
     y *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
-    let z = Math.random() * (limit);
+    let z = Math.random() * (cameraLimit/(randomSpread));
     z *= Math.floor(Math.random()*2) == 1 ? 1 : -1;
 
     return new THREE.Vector3(x, y, z);

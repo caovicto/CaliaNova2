@@ -1,27 +1,65 @@
 @import "variables";
 
-@keyframes morph {
-    0% {
-        border-radius:  60% 40% 0% 0% / 60% 30% 0% 0%;
-        background: linear-gradient(45deg, $wave-color 0%, $wave-color2 100%);
-      } 
-      
-      50% {
-        border-radius:  30% 60% 0% 0% / 50% 60% 0% 0%;
-        background: linear-gradient(45deg, $wave-color3 0%, $wave-color2 100%);
-      }
-    
-      100% {
-        border-radius:  60% 40% 0% 0% / 60% 30% 0% 0%;
-        background: linear-gradient(45deg, $wave-color 0%, $wave-color2 100%);
-      } 
+@keyframes slide {
+  50% { 
+    clip-path: polygon(100% 120%, 100% 115%, 0% 115%, 0% 120%); 
+    transform: translateY(100%);
+    opacity: 0;
   }
-
-@keyframes animate {
-  0%, 100% {
-    transform: translateY(-1vw) rotate(-2deg);
-  }
-  50% {
-    transform: translateY(1vw) rotate(2deg);
+  100% { 
+    clip-path: polygon(100% -15% , 100% 120% , 0% 120% , 0% -15%);
+    transfor: traslateY(0);
+    opacity: 1;
   }
 }
+
+@keyframes glow {
+  0% { 
+    text-shadow: 0 0 0.1vw lightpink;
+  }
+  50% { 
+    text-shadow: 0 0 0.4vw lightpink;
+  }
+  100% { 
+    text-shadow: 0 0 0.1vw lightpink;
+  }
+}
+
+@keyframes noise-anim{
+  $steps:10;
+  @for $i from 0 through $steps{
+      #{percentage($i*(1/$steps))}{
+      clip:rect(random(100)+px,100%, random(100)+px,0);
+      }
+  }
+}
+
+
+@keyframes noise-anim-2{
+  0%, 80% {
+    // clip:rect(0, 100%, 100%, 0);
+    transform: translateX(percentage((random(3))/100));
+  }
+
+  @for $i from 90 through 100{
+    #{percentage(($i)/100)}{
+      // clip:rect(random(100)+px,9999px, random(100)+px,0);
+      transform: translateX(percentage((random(3))/100));
+    }
+  }
+}
+
+@keyframes noise-anim-3{
+  0%, 35%, 65%, 100% {
+    clip:rect(0, 100%, 100%, 0);
+    transform: translateX(percentage((random(5))/100));
+  }
+
+  @for $i from 40 through 60 {
+    #{percentage(($i)/100)}{
+      clip:rect(random(100)+px,9999px, random(100)+px,0);
+      transform: translateX(percentage((random(5))/100));
+    }
+  }
+}
+

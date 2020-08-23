@@ -1,6 +1,15 @@
 @import "variables";
 @import "animations";
 
+
+
+#landing {
+    @extend .background;
+    z-index: 99;
+}
+
+
+
 .background {
     width: 100vw;
     height: 100vh;
@@ -14,7 +23,7 @@
     display: flex;
 }
 
-.animation-trigger{
+.animation-trigger {
     position: fixed;
 
     z-index: 99;
@@ -28,7 +37,9 @@
     border: 0.5vw solid transparent;
     background-color: transparent;
 
-    // content: "";
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .orb {
